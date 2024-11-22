@@ -18,4 +18,3 @@ public class TodoVO {
     private LocalDate dueDate;
     private boolean finished;
 }
-
