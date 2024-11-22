@@ -30,8 +30,14 @@ dependencies {
     implementation group: 'jstl', name: 'jstl', version: '1.2'
     // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.1'
-// https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly 'org.projectlombok:lombok:1.18.36'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+
+    // test, 단위 테스트에서도, 사용하기.
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+
     // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
     implementation 'com.zaxxer:HikariCP:6.2.1'
 
