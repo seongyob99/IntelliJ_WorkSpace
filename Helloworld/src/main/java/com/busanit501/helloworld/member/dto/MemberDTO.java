@@ -12,8 +12,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 
 public class MemberDTO {
-    private Long mno;
     private String name;
     private LocalDate dueDate;
+    private String mid;
+    private String mpw;
+    private String uuid;
     private boolean finished;
 }

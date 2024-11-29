@@ -30,16 +30,47 @@ public class MemberRegController extends HttpServlet {
     //화면에서 데이터 전달받고 -> DTO -> 서비스로 전달
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        MemberDTO memberDTO = MemberDTO.builder()
-                .name(request.getParameter("name"))
-                .dueDate(LocalDate.parse(request.getParameter("dueDate"),DATE_TIME_FORMATTER))
-                .build();
-        // Controller -> Service
         try {
+            // 요청에서 파라미터 값 가져오기
+            String mid = request.getParameter("mid");
+            String mpw = request.getParameter("mpw");
+            String name = request.getParameter("name");
+            String dueDateParam = request.getParameter("dueDate");
+            String finishedParam = request.getParameter("finished");
+
+            // 필수 값 검증
+            if (mid == null || mid.trim().isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "아이디는 필수 항목입니다.");
+                return;
+            }
+            if (mpw == null || mpw.trim().isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "비밀번호는 필수 항목입니다.");
+                return;
+            }
+
+            boolean finished = "on".equals(finishedParam);
+
+            LocalDate dueDate = null;
+            if (dueDateParam != null && !dueDateParam.isEmpty()) {
+                dueDate = LocalDate.parse(dueDateParam, DATE_TIME_FORMATTER);
+            }
+
+            // DTO 생성
+            MemberDTO memberDTO = MemberDTO.builder()
+                    .mid(mid)
+                    .mpw(mpw)
+                    .name(name)
+                    .dueDate(dueDate)
+                    .finished(finished)
+                    .build();
+
+            // 서비스 호출
             memberService.register(memberDTO);
+
+            // 성공 시 리스트 페이지로 이동
             response.sendRedirect("/member/list");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("데이터베이스 오류: " + e.getMessage(), e);
         }
     }
 

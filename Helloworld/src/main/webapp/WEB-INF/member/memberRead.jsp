@@ -13,7 +13,7 @@
 <body>
 <h1>마이페이지</h1>
 <div>
-    <input type="text" name="mno" value="${dto.mno}" readonly>
+    <input type="text" name="mno" value="${dto.mid}" readonly>
 </div>
 <div>
     <input type="text" name="name" value="${dto.name}" placeholder="제목 입력 해주세요." readonly>
@@ -25,7 +25,7 @@
     <input type="checkbox" name="finished" ${dto.finished ? "checked" : ""} readonly>
 </div>
 <div>
-    <a href="/member/update?mno=${dto.mno}">수정/삭제</a>
+    <a href="/member/update?mid=${dto.mid}">수정/삭제</a>
     <a href="/member/list">목록가기</a>
 </div>
 </body>

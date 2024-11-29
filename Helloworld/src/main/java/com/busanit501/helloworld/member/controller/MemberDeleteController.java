@@ -19,15 +19,19 @@ public class MemberDeleteController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long mno = Long.valueOf(request.getParameter("mno"));
-        //
-        log.info("doPost MemberDeleteController 확인");
-        try {
-            memberService.delete(mno);
+        String mid = request.getParameter("mid"); // 파라미터명 수정
+        if (mid == null || mid.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid 'mid' parameter");
+            return;
+        }
 
+        log.info("doPost MemberDeleteController 확인: mid=" + mid);
+        try {
+            memberService.delete(mid); // String형 mid 전달
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         response.sendRedirect("/member/list");
     }
+
 }

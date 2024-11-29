@@ -22,6 +22,17 @@ public enum MemberService {
         memberDAO = new MemberDAO();
         modelMapper = MapperUtil.INSTANCE.get();
     }
+
+    // 로그인 확인용.
+    public MemberDTO login(String mid, String mpw) throws SQLException {
+        MemberVO memberVO = memberDAO.getMemberWithMpw(mid, mpw);
+        if (memberVO == null) {
+            throw new SQLException("Invalid credentials: User not found or incorrect password.");
+        }
+        MemberDTO memberDTO = modelMapper.map(memberVO, MemberDTO.class);
+        return memberDTO;
+    }
+
     // register
     public void register(MemberDTO memberDTO) throws SQLException {
         MemberVO memberVO = modelMapper.map(memberDTO, MemberVO.class);
@@ -33,20 +44,23 @@ public enum MemberService {
     public List<MemberDTO> listAll() throws SQLException {
         List<MemberVO> voList = memberDAO.selectAll();
         log.info("voList : " + voList);
-        List<MemberDTO> dtoList = voList.stream().map(vo -> modelMapper.map(vo, MemberDTO.class))
+        List<MemberDTO> dtoList = voList.stream()
+                .map(vo -> modelMapper.map(vo, MemberDTO.class))
                 .collect(Collectors.toList());
         return dtoList;
     }
 
-    //하나 조회
-    public MemberDTO get(Long mno) throws SQLException {
-        log.info("mno : " + mno);
+    // 하나 조회
+    public MemberDTO get(String mid) throws SQLException {
+        log.info("mid : " + mid);
         ///  디비에서 하나 조회 결과 받았음.
-        MemberVO memberVO = memberDAO.selectOne(mno);
+        MemberVO memberVO = memberDAO.selectOne(mid);
+        if (memberVO == null) {
+            throw new SQLException("No member found with mid: " + mid);
+        }
         // VO -> DTO 변환 작업.
-        MemberDTO memberDTO = modelMapper.map(memberVO,MemberDTO.class);
+        MemberDTO memberDTO = modelMapper.map(memberVO, MemberDTO.class);
         return memberDTO;
-
     }
 
     // 수정
@@ -57,14 +71,18 @@ public enum MemberService {
     }
 
     // 삭제
-    public void delete(Long mno) throws SQLException {
-        memberDAO.deleteMember(mno);
+    public void delete(String mid) throws SQLException {
+        log.info("Deleting member with mid: " + mid);
+        memberDAO.deleteMember(mid);
     }
 
+    public void updateUuid(String mid, String uuid) throws SQLException {
+        memberDAO.updateUuid(mid, uuid);
+    }
+
+    public MemberDTO getMemberWithUuidService(String uuid) throws SQLException {
+        MemberVO memberVO = memberDAO.getMemberWithUuid(uuid);
+        MemberDTO memberDTO = modelMapper.map(memberVO, MemberDTO.class);
+        return memberDTO;
+    }
 }
-
-
-
-
-
-

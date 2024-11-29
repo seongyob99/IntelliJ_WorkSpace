@@ -5,13 +5,17 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@ToString
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+
 public class MemberVO {
-    private Long mno;
     private String name;
     private LocalDate dueDate;
+    private String mid;
+    private String mpw;
+    private String uuid;
     private boolean finished;
 }

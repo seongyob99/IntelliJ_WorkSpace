@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,16 +22,25 @@ public class MemberListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("doGet MemberListController 확인");
+
+        // 쿠키 확인
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("rememberMe".equals(cookie.getName())) {
+                    log.info("리스트 페이지에서 발견된 쿠키 rememberMe: {}", cookie.getValue());
+                }
+            }
+        }
+
         try {
-            // 서비스에 외주 주고, 전체 목록 리스트 받아오기.
             List<MemberDTO> memberList = memberService.listAll();
-            // 화면에 데이터 전달. + 화면에 데이터 탑재된 화면을 -> 웹브라우저에게 전달.
             request.setAttribute("list", memberList);
             request.getRequestDispatcher("/WEB-INF/member/memberList.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("DB 오류 발생: ", e);
+            response.sendRedirect("/error");
         }
-
     }
 }
