@@ -12,6 +12,7 @@
 </head>
 <body>
 <h1>마이페이지</h1>
+임시 서블릿 컨텍스트의 어플리케이션 공간에 저장된 변수 조회 : ${appTestName}
 <div>
     <input type="text" name="mno" value="${dto.mid}" readonly>
 </div>

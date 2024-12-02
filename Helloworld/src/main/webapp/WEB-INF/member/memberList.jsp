@@ -20,10 +20,11 @@
 <%--<br>--%>
 <%--<a>임시 조회한 게시글 번호 정보 : ${cookie.viewTodos.value}</a>--%>
 <h4>Test</h4>
+임시 서블릿 컨텍스트의 애플리케이션 공간에 저장된 변수 조회 : ${appTestName}
 <c:forEach var="member" items="${list}">
     <tr>
-        <td>${member.name}</td>
-        <td>${member.uuid}</td> <!-- UUID 출력 -->
+            ${member.name}<br>
+            ${member.uuid}<br><!-- UUID 출력 -->
     </tr>
 </c:forEach>
 

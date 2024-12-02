@@ -4,6 +4,7 @@ import com.busanit501.helloworld.member.dto.MemberDTO;
 import com.busanit501.helloworld.member.service.MemberService;
 import lombok.extern.log4j.Log4j2;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -21,6 +22,12 @@ public class MemberListController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        ServletContext context = request.getServletContext();
+        String result = (String) context.getAttribute("appTestName");
+        log.info("MemberListController ServletContext : 값 조회 확인중 : " + result);
+
+
         log.info("doGet MemberListController 확인");
 
         // 쿠키 확인
