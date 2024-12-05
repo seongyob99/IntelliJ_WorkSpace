@@ -28,4 +28,16 @@
 
     <!--    자바의 애너테이션으로 @Controller 이용할려면, 등록된 파일의 위치 패키지를 시스템에게 알려줘야함. -->
     <context:component-scan base-package="com.busanit501.springex.controller"/>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="formatters">
+            <set>
+<!--                2024-12-04, 문자열 타입으로 오면 -> Local 타입 자동 변환-->
+                <bean class="com.busanit501.springex.controller.formatter.LocalDateFormatter"></bean>
+<!--                finished 체크되었다면, 체크박스라서 같은 on 문자열-->
+                <bean class="com.busanit501.springex.controller.formatter.CheckboxFormatter"></bean>
+            </set>
+        </property>
+    </bean>
+    <mvc:annotation-driven conversion-service="conversionService"/>
 </beans>
